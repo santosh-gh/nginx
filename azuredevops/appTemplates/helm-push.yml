@@ -26,9 +26,9 @@ steps:
       scriptLocation: inlineScript
       inlineScript: |
       
-        echo "Updating image tag in values.yaml"
-        sed -i "s/tag:.*/tag:  ${{parameters.imageTag}}/" ./${{parameters.chartName}}/${{parameters.environment}}-values.yaml
-        cat ./${{parameters.chartName}}/${{parameters.environment}}-values.yaml
+        # echo "Updating image tag in values.yaml"
+        # sed -i "s/tag:.*/tag:  ${{parameters.imageTag}}/" ./${{parameters.chartName}}/${{parameters.environment}}-values.yaml
+        # cat ./${{parameters.chartName}}/${{parameters.environment}}-values.yaml
 
         echo "Updating Helm chart version in Chart.yaml"
         sed -i "s/^version: .*/version: ${{parameters.helmChartVersion}}/" ./${{parameters.chartName}}/Chart.yaml
