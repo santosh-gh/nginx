@@ -55,11 +55,8 @@ steps:
       namespace: ${{parameters.namespace}}
       command: upgrade
       chartType: FilePath
-      chartPath: './${{parameters.chartName}}-${{parameters.helmChartVersion}}.tgz' 
-      overrideValues: |
-        nginx.replicas=5
-
-      #valueFile: './storehelmchart/${{parameters.chartName}}/$(environment)-values.yaml'
+      chartPath: './${{parameters.chartName}}-${{parameters.helmChartVersion}}.tgz'
+      valueFile: './${{parameters.chartName}}/$(environment)-values.yaml'
       releaseName: ${{parameters.chartName}}
       install: true
       waitForExecution: true
