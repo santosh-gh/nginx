@@ -13,6 +13,8 @@ parameters:
   type: string
 - name: "serviceConnection"
   type: string
+- name: "environment"
+  type: string
 
 steps:   
   - checkout: self
@@ -25,7 +27,7 @@ steps:
       inlineScript: |
       
         echo "Updating image tag in values.yaml"
-        sed -i "s/tag:.*/tag:  ${{parameters.imageTag}}/" ./${{parameters.chartName}}/values.yaml
+        sed -i "s/tag:.*/tag:  ${{parameters.imageTag}}/" ./${{parameters.chartName}}/${{parameters.environment}}-values.yaml
         cat ./${{parameters.chartName}}/values.yaml
 
         echo "Updating Helm chart version in Chart.yaml"

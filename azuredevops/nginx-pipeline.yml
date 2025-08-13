@@ -35,6 +35,7 @@ stages:
             helmRepoName: $(helmRepoName)
             acrName: $(acrName)
             serviceConnection: $(serviceConnection)
+            environment: $(environment)
 
   - stage: Dev_Deploy
     displayName: Deploy to AKS Dev

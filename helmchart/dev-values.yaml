@@ -3,7 +3,7 @@ deployment:
     image:
       repository: nginx
       tag: latest
-  replicas: 2
+  replicas: 3
 kubernetesClusterDomain: cluster.local
 service:
   ports:
