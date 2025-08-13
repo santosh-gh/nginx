@@ -57,8 +57,7 @@ steps:
       chartType: FilePath
       chartPath: './${{parameters.chartName}}-${{parameters.helmChartVersion}}.tgz' 
       overrideValues: |
-        nginx.replicas=$[eq(parameters.environment, 'prod') ? 5 : 2]
-        # For production, set replicas to 5, otherwise set to 1
+        nginx.replicas: 5
 
       #valueFile: './storehelmchart/${{parameters.chartName}}/$(environment)-values.yaml'
       releaseName: ${{parameters.chartName}}
