@@ -57,6 +57,7 @@ stages:
             serviceConnection: $(serviceConnection)
             environment: $(environment)
             namespace: $(namespace)
+            imageTag: $(imageTag)
 
   - stage: Prod_Deploy
     displayName: Deploy to AKS Prod
@@ -79,3 +80,4 @@ stages:
             serviceConnection: $(serviceConnection)
             environment: $(environment)
             namespace: $(namespace)
+            imageTag: $(imageTag)

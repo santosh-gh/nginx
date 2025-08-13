@@ -17,6 +17,8 @@ parameters:
   type: string
 - name: "environment"
   type: string
+- name: "imageTag"
+  type: string
 
 steps:
   - checkout: self
@@ -57,6 +59,8 @@ steps:
       chartType: FilePath
       chartPath: './${{parameters.chartName}}-${{parameters.helmChartVersion}}.tgz'
       valueFile: './${{parameters.chartName}}/$(environment)-values.yaml'
+      overrideValues: |       
+        image.tag=$(imageTag)
       releaseName: ${{parameters.chartName}}
       install: true
       waitForExecution: true
