@@ -1,0 +1,81 @@
+trigger: none
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+variables:
+  - group: k8s-common
+  - name: helmRepoName
+    value: 'helm'
+  - name: chartName 
+    value: 'helmchart'
+  - name: helmChartPath 
+    value: './helmchart/'
+  - name: helmChartVersion
+    value: $(Build.BuildId)
+  - name: imageTag
+    value: '1.27.5'
+  - name: imageName
+    value: 'nginx'
+
+stages:
+  - stage: HelmPackagePush
+    displayName: Helm Package and Push
+    jobs:
+    - job: Helm
+      pool:
+        vmImage: 'ubuntu-latest'
+      steps:
+        - template: appTemplates/helm-push.yml
+          parameters:
+            imageTag: $(imageTag)
+            helmChartPath: $(helmChartPath)
+            chartName: $(chartName)
+            helmChartVersion: $(helmChartVersion) 
+            helmRepoName: $(helmRepoName)
+            acrName: $(acrName)
+            serviceConnection: $(serviceConnection)
+
+  - stage: Dev_Deploy
+    displayName: Deploy to AKS Dev
+    dependsOn: HelmPackagePush
+    jobs:
+    - job: Deploy
+      pool:
+        vmImage: 'ubuntu-latest'
+      variables:
+      - group: 'k8s-dev'
+      steps:
+        - template: appTemplates/deploy.yml
+          parameters:
+            chartName: $(chartName)
+            helmChartVersion: $(helmChartVersion) 
+            helmRepoName: $(helmRepoName)
+            acrName: $(acrName)
+            aksCluster: $(aksCluster)
+            aksResourceGroup: $(aksResourceGroup) 
+            serviceConnection: $(serviceConnection)
+            environment: $(environment)
+            namespace: $(namespace)
+
+  - stage: Prod_Deploy
+    displayName: Deploy to AKS Prod
+    dependsOn: Dev_Deploy
+    jobs:
+    - job: Deploy
+      pool:
+        vmImage: 'ubuntu-latest'
+      variables:
+      - group: 'k8s-prod'
+      steps:
+        - template: appTemplates/deploy.yml
+          parameters:
+            chartName: $(chartName)
+            helmChartVersion: $(helmChartVersion) 
+            helmRepoName: $(helmRepoName)
+            acrName: $(acrName)
+            aksCluster: $(aksCluster)
+            aksResourceGroup: $(aksResourceGroup) 
+            serviceConnection: $(serviceConnection)
+            environment: $(environment)
+            namespace: $(namespace)

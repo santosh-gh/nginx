@@ -1,0 +1,14 @@
+deployment:
+  nginx:
+    image:
+      repository: nginx
+      tag: latest
+  replicas: 1
+kubernetesClusterDomain: cluster.local
+service:
+  ports:
+  - nodePort: 30080
+    port: 80
+    protocol: TCP
+    targetPort: 80
+  type: NodePort
